@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Customer(models.Model):
+    """Model representing a customer of the business."""
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     email = models.EmailField(blank=True, null=True)
@@ -14,6 +15,7 @@ class Customer(models.Model):
         return str(self.name)
 
 class Supplier(models.Model):
+    """Model representing a supplier for the business."""
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     email = models.EmailField(blank=True, null=True)
@@ -26,6 +28,7 @@ class Supplier(models.Model):
         return str(self.name)
 
 class BusinessProfile(models.Model):
+    """Model representing a business profile for a user."""
     BUSINESS_TYPES = [
         ('retail', 'Retail Shop'),
         ('wholesale', 'Wholesale'),
@@ -58,6 +61,7 @@ class BusinessProfile(models.Model):
         return f"{self.business_name} - {self.user.username}"
 
 class Account(models.Model):
+    """Model representing a general ledger account."""
     ACCOUNT_TYPES = [
         ('asset', 'Asset'),
         ('liability', 'Liability'),
@@ -84,6 +88,7 @@ class Account(models.Model):
         unique_together = ('business', 'code')
 
 class JournalEntry(models.Model):
+    """Model representing a journal entry in the accounting system."""
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     business = models.ForeignKey(BusinessProfile, on_delete=models.CASCADE)
     date = models.DateField()
@@ -96,6 +101,7 @@ class JournalEntry(models.Model):
         return f"{self.reference_no} - {self.date}"
 
 class JournalItem(models.Model):
+    """Model representing a line item in a journal entry."""
     entry = models.ForeignKey(JournalEntry, related_name='items', on_delete=models.CASCADE)
     account = models.ForeignKey(Account, on_delete=models.CASCADE)
     debit = models.DecimalField(max_digits=15, decimal_places=2, default=0.00)
@@ -106,6 +112,7 @@ class JournalItem(models.Model):
         return f"{self.account.name} - Dr: {self.debit}, Cr: {self.credit}"
 
 class Expense(models.Model):
+    """Model representing a business expense."""
     RECURRENCE_CHOICES = [
         ('none', 'None'),
         ('daily', 'Daily'),
