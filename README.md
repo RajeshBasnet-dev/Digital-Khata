@@ -9,6 +9,8 @@ A Django-based small business management web application designed for Nepali bus
 - **Financial Reporting**: Generate reports and export data
 - **User Authentication**: Secure login and signup system
 - **Responsive Design**: Works on desktop and mobile devices
+- **Accounting System**: Complete double-entry bookkeeping with chart of accounts
+- **Tax Management**: Automatic GST/VAT calculation and reporting
 
 ## Tech Stack
 
@@ -64,3 +66,7 @@ A Django-based small business management web application designed for Nepali bus
 ## License
 
 This project is licensed under the MIT License.
+
+## Development Status
+
+This project is actively maintained with regular updates and improvements.
