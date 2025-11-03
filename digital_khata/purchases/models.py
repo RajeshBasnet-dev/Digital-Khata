@@ -36,6 +36,7 @@ def get_default_business():
             return 1
 
 class Bill(models.Model):
+    """Model representing a purchase bill."""
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     business = models.ForeignKey(BusinessProfile, on_delete=models.CASCADE, default=get_default_business)
     supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE)
@@ -66,6 +67,7 @@ class Bill(models.Model):
         super().save(*args, **kwargs)
 
 class BillItem(models.Model):
+    """Model representing an item in a purchase bill."""
     bill = models.ForeignKey(Bill, related_name='items', on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
