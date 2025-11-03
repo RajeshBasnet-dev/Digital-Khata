@@ -1,0 +1,42 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Django development database
+*.sqlite3
+
+# Media and static files (usually collected)
+media/
+staticfiles/
+
+# Environment files
+.env
+.venv/
+env/
+venv/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Django cache
+.cache/
+
+# Log files
+*.log
+
+# Django migrations (except for initial ones)
+**/migrations/0*.py
+**/migrations/0*.pyc

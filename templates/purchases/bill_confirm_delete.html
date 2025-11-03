@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete Bill - Digital Khata{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card border-danger">
+            <div class="card-header bg-danger text-white">
+                <h3>Delete Bill</h3>
+            </div>
+            <div class="card-body">
+                <p>Are you sure you want to delete the bill <strong>{{ bill.bill_number }}</strong> for supplier <strong>{{ bill.supplier.name }}</strong>?</p>
+                <p>This action cannot be undone.</p>
+                
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="d-flex justify-content-between">
+                        <a href="{% url 'purchases:bill_list' %}" class="btn btn-secondary">Cancel</a>
+                        <button type="submit" class="btn btn-danger">Delete Bill</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
