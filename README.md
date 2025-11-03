@@ -1,107 +1,66 @@
-# Digital Khata - Small Business Management Application
+# Digital Khata
 
-Digital Khata is a Django-based web application designed for small business management, inspired by the Karobar App. It provides essential features for managing sales, purchases, inventory, and financial reporting.
+A Django-based small business management web application designed for Nepali businesses.
 
 ## Features
 
-### User Authentication
-- Sign up, login, and logout functionality
-- User-specific data isolation (each user sees only their data)
+- **Inventory Management**: Track products, stock levels, and low-stock alerts
+- **Sales & Purchases**: Create invoices and bills with automatic tax calculations
+- **Financial Reporting**: Generate reports and export data
+- **User Authentication**: Secure login and signup system
+- **Responsive Design**: Works on desktop and mobile devices
 
-### Dashboard
-- Summary of total sales, purchases, outstanding invoices, and stock alerts
-- Recent sales overview
-- Top products display
-- Low stock warnings
+## Tech Stack
 
-### Inventory Management
-- CRUD operations for products (name, SKU, price, quantity, tax)
-- Automatic stock updates when invoices/bills are created
-- Low-stock alerts
-
-### Sales Invoice Management
-- Create sales invoices with customer, product, quantity, price, and tax
-- Track payment status (paid/unpaid)
-- Automatic product quantity deduction
-
-### Purchase/Bill Management
-- Record purchases from suppliers
-- Track supplier balances
-- Automatic product quantity increase
-
-### Reporting
-- Daily, weekly, and monthly summaries for sales, purchases, and stock
-- Export reports to CSV format
-
-## Technology Stack
-- **Backend**: Django 5.2.7 with Python
-- **Database**: SQLite (for development)
-- **Frontend**: HTML, CSS, JavaScript with Bootstrap 5
-- **Authentication**: Django's built-in authentication system
+- **Backend**: Django 5.2
+- **Frontend**: HTML, CSS, JavaScript, Bootstrap 5
+- **Database**: SQLite (development), PostgreSQL (production)
+- **Authentication**: Django built-in authentication
 
 ## Installation
 
-1. Clone the repository
-2. Install the required dependencies:
+1. Clone the repository:
+   ```bash
+   git clone <repository-url>
+   cd digital-khata
    ```
+
+2. Create a virtual environment:
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
+
+3. Install dependencies:
+   ```bash
    pip install -r requirements.txt
    ```
-3. Run migrations:
-   ```
+
+4. Run migrations:
+   ```bash
    python manage.py migrate
    ```
-4. Create a superuser (optional):
-   ```
-   python manage.py createsuperuser
-   ```
+
 5. Start the development server:
-   ```
+   ```bash
    python manage.py runserver
    ```
 
-## Project Structure
+## Usage
 
-```
-digital_khata/
-├── accounts/          # User authentication and customer/supplier management
-├── dashboard/         # Dashboard views and templates
-├── inventory/         # Product and inventory management
-├── sales/             # Sales invoice management
-├── purchases/         # Purchase bill management
-├── reports/           # Reporting functionality
-├── templates/         # HTML templates
-├── static/            # CSS, JavaScript, and other static files
-├── manage.py          # Django management script
-└── digital_khata/     # Main project settings and configuration
-```
+1. Visit `http://127.0.0.1:8000/` to access the landing page
+2. Sign up for a new account or log in with existing credentials
+3. Set up your business profile
+4. Start managing your business operations
 
-## Database Models
+## Contributing
 
-### Accounts
-- **Customer**: Customer information (name, email, phone, address)
-- **Supplier**: Supplier information (name, email, phone, address)
-
-### Inventory
-- **Product**: Product details (name, SKU, price, quantity, tax rate)
-
-### Sales
-- **Invoice**: Sales invoice (customer, date, status, amounts)
-- **InvoiceItem**: Individual items in an invoice
-
-### Purchases
-- **Bill**: Purchase bill (supplier, date, status, amounts)
-- **BillItem**: Individual items in a bill
-
-## URLs
-
-- `/` - Redirects to dashboard
-- `/accounts/` - User authentication
-- `/dashboard/` - Main dashboard
-- `/inventory/` - Product management
-- `/sales/` - Sales invoice management
-- `/purchases/` - Purchase bill management
-- `/reports/` - Financial reporting
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a pull request
 
 ## License
 
-This project is open source and available under the MIT License.
+This project is licensed under the MIT License.
