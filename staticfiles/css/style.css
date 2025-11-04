@@ -1,0 +1,89 @@
+/* Custom styles for Digital Khata */
+body {
+    background-color: #f8f9fa;
+}
+
+.navbar-brand {
+    font-weight: bold;
+}
+
+.card {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    border: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.card-header {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-primary:hover {
+    background-color: #0069d9;
+    border-color: #0062cc;
+}
+
+.table th {
+    background-color: #e9ecef;
+}
+
+.badge-success {
+    background-color: #28a745;
+}
+
+.badge-warning {
+    background-color: #ffc107;
+}
+
+.badge-danger {
+    background-color: #dc3545;
+}
+
+.stat-card {
+    text-align: center;
+    padding: 1rem;
+}
+
+.stat-card .bi {
+    font-size: 2rem;
+    color: #007bff;
+}
+
+.stat-card h3 {
+    font-size: 1.5rem;
+    margin: 0.5rem 0;
+}
+
+.form-container {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.search-form {
+    margin-bottom: 1rem;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+footer {
+    border-top: 1px solid #dee2e6;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .table-responsive {
+        font-size: 0.875rem;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+    }
+}

@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="bi bi-box me-2"></i>Inventory Report</h2>
+    <form method="get" class="d-flex">
+        <input type="text" name="search" class="form-control me-2" placeholder="Search products..." value="{{ search_query }}">
+        <div class="form-check me-2 mt-2">
+            <input class="form-check-input" type="checkbox" name="low_stock" id="lowStock" {% if low_stock %}checked{% endif %}>
+            <label class="form-check-label" for="lowStock">Low Stock Only</label>
+        </div>
+        <button type="submit" class="btn btn-primary">Filter</button>
+    </form>
+</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-md-3">
+        <div class="stat-card">
+            <i class="bi bi-box text-primary"></i>
+            <h3 class="mt-2">{{ products|length }}</h3>
+            <p class="mb-0">Total Products</p>
+        </div>
+    </div>
+    
+    <div class="col-md-3">
+        <div class="stat-card">
+            <i class="bi bi-currency-dollar text-success"></i>
+            <h3 class="mt-2">रू {{ total_inventory_value|floatformat:2 }}</h3>
+            <p class="mb-0">Total Inventory Value</p>
+        </div>
+    </div>
+    
+    <div class="col-md-3">
+        <div class="stat-card">
+            <i class="bi bi-exclamation-triangle text-warning"></i>
+            <h3 class="mt-2">{{ low_stock_count }}</h3>
+            <p class="mb-0">Low Stock Items</p>
+        </div>
+    </div>
+    
+    <div class="col-md-3">
+        <div class="stat-card">
+            <i class="bi bi-x-circle text-danger"></i>
+            <h3 class="mt-2">{{ out_of_stock_count }}</h3>
+            <p class="mb-0">Out of Stock Items</p>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h5 class="mb-0">Inventory Details</h5>
+    </div>
+    <div class="card-body">
+        {% if products %}
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Product Name</th>
+                        <th>SKU</th>
+                        <th>Category</th>
+                        <th>Price</th>
+                        <th>Stock Quantity</th>
+                        <th>Low Stock Threshold</th>
+                        <th>Status</th>
+                        <th>Total Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product in products %}
+                    <tr>
+                        <td>{{ product.name }}</td>
+                        <td>{{ product.sku }}</td>
+                        <td>{{ product.category|default:"-" }}</td>
+                        <td>रू {{ product.price|floatformat:2 }}</td>
+                        <td>{{ product.stock_quantity }}</td>
+                        <td>{{ product.low_stock_threshold }}</td>
+                        <td>
+                            <span class="badge bg-{% if product.get_stock_status == 'in_stock' %}success{% elif product.get_stock_status == 'low_stock' %}warning{% else %}danger{% endif %}">
+                                {{ product.get_stock_status|title }}
+                            </span>
+                        </td>
+                        <td>रू {{ product.total_value|floatformat:2 }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="text-muted text-center">No inventory data found.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

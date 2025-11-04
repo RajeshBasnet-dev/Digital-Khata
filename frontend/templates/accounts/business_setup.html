@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-lg border-0 rounded-lg mt-5">
+            <div class="card-header bg-primary text-white text-center">
+                <h4><i class="bi bi-building me-2"></i>Business Setup</h4>
+            </div>
+            <div class="card-body p-5">
+                <div class="text-center mb-4">
+                    <p class="text-muted">Tell us about your business to get started</p>
+                </div>
+                
+                <form method="post" class="needs-validation" novalidate>
+                    {% csrf_token %}
+                    
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            {{ form.non_field_errors }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    {% endif %}
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <label for="{{ form.business_name.id_for_label }}" class="form-label fw-bold">Business Name</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-shop"></i></span>
+                                {{ form.business_name }}
+                            </div>
+                            {% if form.business_name.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.business_name.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="col-md-6 mb-4">
+                            <label for="{{ form.business_type.id_for_label }}" class="form-label fw-bold">Business Type</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-tag"></i></span>
+                                {{ form.business_type }}
+                            </div>
+                            {% if form.business_type.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.business_type.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="{{ form.address.id_for_label }}" class="form-label fw-bold">Address</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
+                            {{ form.address }}
+                        </div>
+                        {% if form.address.errors %}
+                            <div class="invalid-feedback d-block">
+                                {{ form.address.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <label for="{{ form.country.id_for_label }}" class="form-label fw-bold">Country</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-flag"></i></span>
+                                {{ form.country }}
+                            </div>
+                            {% if form.country.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.country.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="col-md-6 mb-4">
+                            <label for="{{ form.currency.id_for_label }}" class="form-label fw-bold">Currency</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-currency-dollar"></i></span>
+                                {{ form.currency }}
+                            </div>
+                            {% if form.currency.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.currency.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="{{ form.tax_id.id_for_label }}" class="form-label fw-bold">Tax ID (PAN/VAT)</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-receipt"></i></span>
+                            {{ form.tax_id }}
+                        </div>
+                        {% if form.tax_id.errors %}
+                            <div class="invalid-feedback d-block">
+                                {{ form.tax_id.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="d-grid mb-3">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="bi bi-save me-2"></i>Save Business Information
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

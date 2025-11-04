@@ -1,12 +1,24 @@
-# Digital Khata - Integrated Django + React Application
+# Digital Khata - Business Management System
 
-This is a business management application built with Django backend and React frontend. The application provides a complete solution for small business accounting, inventory management, sales, purchases, and financial reporting.
+Digital Khata is a comprehensive business management solution built with Django backend and a modern HTML/CSS/JavaScript frontend. The application provides a complete solution for small business accounting, inventory management, sales, purchases, and financial reporting with a professional, responsive UI.
+
+## Features
+
+- **User Authentication**: Secure login and signup system
+- **Business Profile Setup**: Configure business details and preferences
+- **Dashboard**: Overview of key business metrics and performance indicators
+- **Inventory Management**: Track products, categories, and stock levels
+- **Sales Management**: Create and manage invoices and customer records
+- **Purchase Management**: Handle supplier bills and purchase orders
+- **Accounting**: Chart of accounts, journal entries, ledgers, and tax management
+- **Financial Reports**: Generate sales, purchase, inventory, and profit/loss reports
+- **Responsive Design**: Works seamlessly on desktop, tablet, and mobile devices
+- **Modern UI**: Professional interface with intuitive navigation
 
 ## Prerequisites
 
 - Python 3.8+
-- Node.js 14+
-- npm or yarn
+- Node.js 14+ (for development tools)
 
 ## Setup Instructions
 
@@ -33,113 +45,37 @@ This is a business management application built with Django backend and React fr
    python manage.py createsuperuser
    ```
 
-### 2. Frontend Setup (React)
+### 2. Frontend Setup (HTML/CSS/JavaScript)
 
-1. Install frontend dependencies:
-   ```bash
-   cd frontend
-   npm install
-   ```
+The frontend is built with pure HTML, CSS, and JavaScript with Bootstrap 5 for styling. No build step is required for development.
 
 ## Running the Application
 
 ### Development Mode
 
-To run both Django backend and React frontend in development mode:
+To run the Django application:
 
-1. Start the Django backend:
+```bash
+python manage.py runserver
+```
+
+This will start the application on http://127.0.0.1:8000
+
+The application includes both the landing page and all business management features in a single Django project.
+
+### Production Deployment
+
+For production deployment:
+
+1. Collect static files:
    ```bash
-   python manage.py runserver
-   ```
-   This will start the backend on http://127.0.0.1:8000
-
-2. In a separate terminal, start the React frontend:
-   ```bash
-   cd frontend
-   npm run dev
-   ```
-   This will start the frontend on http://localhost:3000
-
-The frontend is configured to proxy API requests to the Django backend automatically.
-
-### Production Build
-
-To build the frontend for production:
-
-1. Build the React app:
-   ```bash
-   cd frontend
-   npm run build
+   python manage.py collectstatic
    ```
 
-2. The built files will be in the `dist` folder, which Django is configured to serve.
-
-## API Endpoints
-
-All API endpoints are prefixed with `/api/` and require authentication:
-
-### Authentication
-- `POST /accounts/api/login/` - User login
-- `POST /accounts/api/logout/` - User logout
-- `POST /accounts/api/signup/` - User registration
-- `GET /accounts/api/profile/` - Get user profile
-
-### Dashboard
-- `GET /dashboard/api/data/` - Get dashboard metrics
-
-### Inventory
-- `GET /inventory/api/products/` - List all products
-- `POST /inventory/api/products/` - Create a new product
-- `GET /inventory/api/products/{id}/` - Get a specific product
-- `PUT /inventory/api/products/{id}/` - Update a product
-- `DELETE /inventory/api/products/{id}/` - Delete a product
-- `GET /inventory/api/categories/` - List all categories
-- `POST /inventory/api/categories/` - Create a new category
-- `GET /inventory/api/categories/{id}/` - Get a specific category
-- `PUT /inventory/api/categories/{id}/` - Update a category
-- `DELETE /inventory/api/categories/{id}/` - Delete a category
-
-### Sales
-- `GET /sales/api/invoices/` - List all invoices
-- `POST /sales/api/invoices/` - Create a new invoice
-- `GET /sales/api/invoices/{id}/` - Get a specific invoice
-- `PUT /sales/api/invoices/{id}/` - Update an invoice
-- `DELETE /sales/api/invoices/{id}/` - Delete an invoice
-
-### Purchases
-- `GET /purchases/api/bills/` - List all bills
-- `POST /purchases/api/bills/` - Create a new bill
-- `GET /purchases/api/bills/{id}/` - Get a specific bill
-- `PUT /purchases/api/bills/{id}/` - Update a bill
-- `DELETE /purchases/api/bills/{id}/` - Delete a bill
-
-### Accounting
-- `GET /accounting/api/accounts/` - List all accounts
-- `POST /accounting/api/accounts/` - Create a new account
-- `GET /accounting/api/accounts/{id}/` - Get a specific account
-- `PUT /accounting/api/accounts/{id}/` - Update an account
-- `DELETE /accounting/api/accounts/{id}/` - Delete an account
-- `GET /accounting/api/journal-entries/` - List all journal entries
-- `POST /accounting/api/journal-entries/` - Create a new journal entry
-- `GET /accounting/api/journal-entries/{id}/` - Get a specific journal entry
-- `PUT /accounting/api/journal-entries/{id}/` - Update a journal entry
-- `DELETE /accounting/api/journal-entries/{id}/` - Delete a journal entry
-- `GET /accounting/api/ledgers/` - List all ledger entries
-- `GET /accounting/api/expenses/` - List all expenses
-- `POST /accounting/api/expenses/` - Create a new expense
-- `GET /accounting/api/expenses/{id}/` - Get a specific expense
-- `PUT /accounting/api/expenses/{id}/` - Update an expense
-- `DELETE /accounting/api/expenses/{id}/` - Delete an expense
-- `GET /accounting/api/tax-configurations/` - List all tax configurations
-- `POST /accounting/api/tax-configurations/` - Create a new tax configuration
-- `GET /accounting/api/tax-configurations/{id}/` - Get a specific tax configuration
-- `PUT /accounting/api/tax-configurations/{id}/` - Update a tax configuration
-- `DELETE /accounting/api/tax-configurations/{id}/` - Delete a tax configuration
-
-### Reports
-- `GET /reports/api/sales/` - Get sales report data
-- `GET /reports/api/purchases/` - Get purchases report data
-- `GET /reports/api/inventory/` - Get inventory report data
+2. Run the Django server with a production WSGI server like Gunicorn:
+   ```bash
+   gunicorn digital_khata.wsgi:application
+   ```
 
 ## Project Structure
 
@@ -147,73 +83,87 @@ All API endpoints are prefixed with `/api/` and require authentication:
 karobar_app/
 ├── digital_khata/          # Django project settings
 ├── accounts/               # User authentication and profiles
-├── dashboard/              # Dashboard views and APIs
+├── dashboard/              # Dashboard views and templates
 ├── inventory/              # Product inventory management
 ├── sales/                  # Sales and invoicing
 ├── purchases/              # Purchases and bills
 ├── accounting/             # Accounting and financial records
 ├── reports/                # Business reports
-├── frontend/               # React frontend application
+├── frontend/               # HTML templates and static assets
+│   ├── templates/          # Django HTML templates
+│   └── static/             # CSS, JavaScript, and images
 ├── manage.py              # Django management script
 ├── requirements.txt       # Python dependencies
-├── start_dev.sh           # Development startup script (Linux/Mac)
+└── start_dev.sh           # Development startup script (Linux/Mac)
 └── start_dev.bat          # Development startup script (Windows)
 ```
 
-## Features
+## Key Modules
 
-- User authentication (login/signup)
+### Authentication
+- User registration and login
 - Business profile setup
-- Dashboard with business overview and key metrics
-- Inventory management (products, categories, stock tracking)
-- Sales management (invoices, customers)
-- Purchase management (bills, suppliers)
-- Accounting (chart of accounts, journal entries, ledgers)
-- Tax management and reporting
-- Expense tracking
-- Financial reports (sales, purchases, inventory, profit & loss)
-- Data export capabilities
-- Responsive design for all devices
+- Session management
 
-## Development Scripts
+### Dashboard
+- Business overview with key metrics
+- Recent transactions display
+- Quick access to frequently used features
 
-The project includes convenient scripts for development:
+### Inventory
+- Product management (CRUD operations)
+- Stock level tracking
+- Low stock alerts
+- Product categorization
 
-### Linux/Mac
-```bash
-./start_dev.sh
-```
+### Sales
+- Invoice creation and management
+- Customer records
+- Payment tracking
+- Sales reporting
 
-### Windows
-```cmd
-start_dev.bat
-```
+### Purchases
+- Supplier bill management
+- Purchase order tracking
+- Supplier records
+- Payment status monitoring
 
-These scripts will automatically:
-1. Set up the Python virtual environment if it doesn't exist
-2. Install dependencies
-3. Start the Django backend server
-4. Start the React frontend development server
+### Accounting
+- Chart of accounts
+- Journal entries
+- General ledger
+- Tax configuration and reporting
+- Profit and loss statements
 
-## Deployment
+### Reports
+- Sales performance reports
+- Purchase analysis
+- Inventory status reports
+- Financial summaries
 
-For production deployment:
+## Development
 
-1. Build the frontend:
-   ```bash
-   cd frontend
-   npm run build
-   ```
+### Templates
+All HTML templates are located in `frontend/templates/` and organized by module:
+- `accounts/` - Authentication and user profile pages
+- `dashboard/` - Dashboard views
+- `inventory/` - Product management pages
+- `sales/` - Invoice and customer pages
+- `purchases/` - Bill and supplier pages
+- `accounting/` - Accounting feature pages
+- `reports/` - Report generation pages
 
-2. Collect static files:
-   ```bash
-   python manage.py collectstatic
-   ```
+### Static Assets
+CSS, JavaScript, and image files are located in `frontend/static/`:
+- `css/` - Custom stylesheets
+- `js/` - JavaScript files
+- `images/` - Image assets
 
-3. Run the Django server with a production WSGI server like Gunicorn:
-   ```bash
-   gunicorn digital_khata.wsgi:application
-   ```
+### Customization
+To customize the application:
+1. Modify templates in `frontend/templates/`
+2. Update styles in `frontend/static/css/style.css`
+3. Add JavaScript functionality in `frontend/static/js/main.js`
 
 ## Environment Variables
 
@@ -235,3 +185,11 @@ DATABASE_URL=sqlite:///db.sqlite3
 ## License
 
 This project is licensed under the MIT License.
+
+## Author
+
+Rajesh Basnet
+- Email: basnetrajesh245@gmail.com
+- Phone: 9749782458
+- LinkedIn: https://www.linkedin.com/in/rajesh-basnet-360188340/
+- Education: Bachelor in Management Studies (BMS), Lumbini Banijya Campus
