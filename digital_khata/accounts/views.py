@@ -4,7 +4,152 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
 from .forms import SignUpForm, CustomerForm, SupplierForm, BusinessProfileForm
-from .models import Customer, Supplier, BusinessProfile
+from .models import Customer, Supplier, BusinessProfile, Account, JournalEntry, Expense
+
+from rest_framework import generics, status
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from django.contrib.auth import authenticate
+from django.views.decorators.csrf import csrf_exempt
+from .serializers import (
+    UserSerializer, CustomerSerializer, SupplierSerializer, 
+    BusinessProfileSerializer, AccountSerializer, JournalEntrySerializer, 
+    ExpenseSerializer
+)
+
+
+# API Views
+class CustomerListCreateAPIView(generics.ListCreateAPIView):
+    serializer_class = CustomerSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        return Customer.objects.filter(user=self.request.user)
+    
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+class CustomerRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = CustomerSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        return Customer.objects.filter(user=self.request.user)
+
+class SupplierListCreateAPIView(generics.ListCreateAPIView):
+    serializer_class = SupplierSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        return Supplier.objects.filter(user=self.request.user)
+    
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+class SupplierRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = SupplierSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        return Supplier.objects.filter(user=self.request.user)
+
+class BusinessProfileListCreateAPIView(generics.ListCreateAPIView):
+    serializer_class = BusinessProfileSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        return BusinessProfile.objects.filter(user=self.request.user)
+    
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+class BusinessProfileRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = BusinessProfileSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        return BusinessProfile.objects.filter(user=self.request.user)
+
+class AccountListCreateAPIView(generics.ListCreateAPIView):
+    serializer_class = AccountSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        return Account.objects.filter(user=self.request.user)
+    
+    def perform_create(self, serializer):
+        # Set business from user's business profile
+        try:
+            business_profile = BusinessProfile.objects.get(user=self.request.user)
+            serializer.save(user=self.request.user, business=business_profile)
+        except BusinessProfile.DoesNotExist:
+            serializer.save(user=self.request.user)
+
+class AccountRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = AccountSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        return Account.objects.filter(user=self.request.user)
+
+class JournalEntryListCreateAPIView(generics.ListCreateAPIView):
+    serializer_class = JournalEntrySerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        return JournalEntry.objects.filter(user=self.request.user)
+    
+    def perform_create(self, serializer):
+        # Set business from user's business profile
+        try:
+            business_profile = BusinessProfile.objects.get(user=self.request.user)
+            serializer.save(user=self.request.user, business=business_profile)
+        except BusinessProfile.DoesNotExist:
+            serializer.save(user=self.request.user)
+
+class JournalEntryRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = JournalEntrySerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        return JournalEntry.objects.filter(user=self.request.user)
+
+class ExpenseListCreateAPIView(generics.ListCreateAPIView):
+    serializer_class = ExpenseSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        return Expense.objects.filter(user=self.request.user)
+    
+    def perform_create(self, serializer):
+        # Set business from user's business profile
+        try:
+            business_profile = BusinessProfile.objects.get(user=self.request.user)
+            serializer.save(user=self.request.user, business=business_profile)
+        except BusinessProfile.DoesNotExist:
+            serializer.save(user=self.request.user)
+
+class ExpenseRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = ExpenseSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        return Expense.objects.filter(user=self.request.user)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def user_profile(request):
+    serializer = UserSerializer(request.user)
+    return Response(serializer.data)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def logout(request):
+    # Django's logout functionality
+    from django.contrib.auth import logout
+    logout(request)
+    return Response({'message': 'Logged out successfully'}, status=status.HTTP_200_OK)
 
 def signup(request):
     if request.method == 'POST':

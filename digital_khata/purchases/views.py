@@ -8,6 +8,40 @@ from inventory.models import Product
 from django.forms import inlineformset_factory
 from django.db.models import Q
 
+from rest_framework import generics, status
+from rest_framework.decorators import api_view
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from .serializers import BillSerializer
+from accounts.models import BusinessProfile
+
+
+# API Views
+class BillListCreateAPIView(generics.ListCreateAPIView):
+    serializer_class = BillSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        return Bill.objects.filter(user=self.request.user)
+    
+    def perform_create(self, serializer):
+        # Set the user and business from the request context
+        request = self.request
+        if request and hasattr(request, 'user'):
+            # Set business from user's business profile
+            try:
+                business_profile = BusinessProfile.objects.get(user=request.user)
+                serializer.save(user=request.user, business=business_profile)
+            except BusinessProfile.DoesNotExist:
+                serializer.save(user=request.user)
+
+class BillRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = BillSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        return Bill.objects.filter(user=self.request.user)
+
 @login_required
 def bill_list(request):
     bills = Bill.objects.filter(user=request.user)

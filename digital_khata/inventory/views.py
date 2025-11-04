@@ -1,9 +1,14 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .models import Product
-from .forms import ProductForm
 from django.db.models import Q
+from rest_framework import generics, status
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from .models import Product, Category
+from .forms import ProductForm
+from .serializers import ProductSerializer, CategorySerializer
 
 @login_required
 def product_list(request):
@@ -62,3 +67,51 @@ def product_delete(request, pk):
         messages.success(request, 'Product deleted successfully!')
         return redirect('inventory:product_list')
     return render(request, 'inventory/product_confirm_delete.html', {'product': product})
+
+
+# API Views
+class ProductListCreateAPIView(generics.ListCreateAPIView):
+    serializer_class = ProductSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        return Product.objects.filter(user=self.request.user)
+    
+    def perform_create(self, serializer):
+        # Set the user and business from the request
+        from accounts.models import BusinessProfile
+        try:
+            business_profile = BusinessProfile.objects.get(user=self.request.user)
+            serializer.save(user=self.request.user, business=business_profile)
+        except BusinessProfile.DoesNotExist:
+            serializer.save(user=self.request.user)
+
+class ProductRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = ProductSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        return Product.objects.filter(user=self.request.user)
+
+class CategoryListCreateAPIView(generics.ListCreateAPIView):
+    serializer_class = CategorySerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        return Category.objects.filter(user=self.request.user)
+    
+    def perform_create(self, serializer):
+        # Set the user and business from the request
+        from accounts.models import BusinessProfile
+        try:
+            business_profile = BusinessProfile.objects.get(user=self.request.user)
+            serializer.save(user=self.request.user, business=business_profile)
+        except BusinessProfile.DoesNotExist:
+            serializer.save(user=self.request.user)
+
+class CategoryRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = CategorySerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        return Category.objects.filter(user=self.request.user)

@@ -1,0 +1,72 @@
+# -------------------------------
+# Text / Line endings
+# -------------------------------
+# Normalize line endings for all text files
+* text=auto
+
+# Python source files always LF
+*.py text eol=lf
+
+# Django templates and static assets
+*.html text eol=lf
+*.css text eol=lf
+*.js text eol=lf
+*.json text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.md text eol=lf
+*.csv text eol=lf
+
+# -------------------------------
+# Binary files
+# -------------------------------
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.svg binary
+*.pdf binary
+*.docx binary
+*.xlsx binary
+*.pptx binary
+*.log binary
+*.pyc binary
+
+# -------------------------------
+# Export-ignore / Generated files
+# -------------------------------
+# Python cache and virtual environment
+__pycache__/ export-ignore
+venv/ export-ignore
+
+# Jupyter notebook checkpoints
+.ipynb_checkpoints/ export-ignore
+
+# Media / uploads
+media/ export-ignore
+
+# Django migrations
+*/migrations/*.pyc export-ignore
+*/migrations/__pycache__/ export-ignore
+
+# -------------------------------
+# GitHub Language Stats (Linguist)
+# -------------------------------
+# Mark Python files correctly
+*.py linguist-language=Python
+
+# Ignore HTML/CSS/JS in stats
+*.html linguist-vendored
+*.css linguist-vendored
+*.js linguist-vendored
+
+# Ignore virtual env, cache, and generated files
+venv/ linguist-vendored
+__pycache__/ linguist-vendored
+*.pyc linguist-generated
+*/migrations/*.py linguist-generated
+
+# Optional: Ignore media and static assets in language stats
+media/ linguist-vendored
+static/ linguist-vendored

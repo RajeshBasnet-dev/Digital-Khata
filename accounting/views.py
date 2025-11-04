@@ -4,12 +4,121 @@ from django.contrib import messages
 from django.db.models import Sum, Q
 from django.http import JsonResponse
 from .models import TaxConfiguration, Ledger
-from accounts.models import BusinessProfile, Account, JournalEntry, JournalItem
-from inventory.models import Product
-from sales.models import Invoice, InvoiceItem
-from purchases.models import Bill, BillItem
-import json
+from accounts.models import BusinessProfile, Account, JournalEntry, JournalItem, Expense
+from rest_framework import generics, status
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from .serializers import (
+    TaxConfigurationSerializer, AccountSerializer, JournalEntrySerializer, 
+    LedgerSerializer, ExpenseSerializer
+)
 from datetime import datetime, timedelta
+
+
+# API Views
+class TaxConfigurationListCreateAPIView(generics.ListCreateAPIView):
+    serializer_class = TaxConfigurationSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        return TaxConfiguration.objects.filter(user=self.request.user)
+    
+    def perform_create(self, serializer):
+        # Set the user and business from the request context
+        request = self.request
+        if request and hasattr(request, 'user'):
+            try:
+                business_profile = BusinessProfile.objects.get(user=request.user)
+                serializer.save(user=request.user, business=business_profile)
+            except BusinessProfile.DoesNotExist:
+                serializer.save(user=request.user)
+
+class TaxConfigurationRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = TaxConfigurationSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        return TaxConfiguration.objects.filter(user=self.request.user)
+
+class AccountListCreateAPIView(generics.ListCreateAPIView):
+    serializer_class = AccountSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        return Account.objects.filter(user=self.request.user)
+    
+    def perform_create(self, serializer):
+        # Set the user and business from the request context
+        request = self.request
+        if request and hasattr(request, 'user'):
+            try:
+                business_profile = BusinessProfile.objects.get(user=request.user)
+                serializer.save(user=request.user, business=business_profile)
+            except BusinessProfile.DoesNotExist:
+                serializer.save(user=request.user)
+
+class AccountRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = AccountSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        return Account.objects.filter(user=self.request.user)
+
+class JournalEntryListCreateAPIView(generics.ListCreateAPIView):
+    serializer_class = JournalEntrySerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        return JournalEntry.objects.filter(user=self.request.user)
+    
+    def perform_create(self, serializer):
+        # Set the user and business from the request context
+        request = self.request
+        if request and hasattr(request, 'user'):
+            try:
+                business_profile = BusinessProfile.objects.get(user=request.user)
+                serializer.save(user=request.user, business=business_profile)
+            except BusinessProfile.DoesNotExist:
+                serializer.save(user=request.user)
+
+class JournalEntryRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = JournalEntrySerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        return JournalEntry.objects.filter(user=self.request.user)
+
+class LedgerListAPIView(generics.ListAPIView):
+    serializer_class = LedgerSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        return Ledger.objects.filter(user=self.request.user)
+
+class ExpenseListCreateAPIView(generics.ListCreateAPIView):
+    serializer_class = ExpenseSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        return Expense.objects.filter(user=self.request.user)
+    
+    def perform_create(self, serializer):
+        # Set the user and business from the request context
+        request = self.request
+        if request and hasattr(request, 'user'):
+            try:
+                business_profile = BusinessProfile.objects.get(user=request.user)
+                serializer.save(user=request.user, business=business_profile)
+            except BusinessProfile.DoesNotExist:
+                serializer.save(user=request.user)
+
+class ExpenseRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = ExpenseSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        return Expense.objects.filter(user=self.request.user)
 
 @login_required
 def chart_of_accounts(request):

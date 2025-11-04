@@ -2,6 +2,38 @@ from django.db import models
 from django.contrib.auth.models import User
 from accounts.models import BusinessProfile
 
+def get_default_business():
+    """
+    Get or create a default business profile for foreign key defaults
+    """
+    try:
+        # Try to get the first business profile
+        return BusinessProfile.objects.first().id
+    except:
+        # If no business profile exists, create a default one
+        from django.contrib.auth import get_user_model
+        User = get_user_model()
+        try:
+            user = User.objects.first()
+            if not user:
+                user = User.objects.create_user(username='default_user', password='default_password')
+            
+            business, created = BusinessProfile.objects.get_or_create(
+                user=user,
+                business_name='Default Business',
+                defaults={
+                    'business_type': 'retail',
+                    'address': 'Default Address',
+                    'country': 'NP',
+                    'currency': 'NPR'
+                }
+            )
+            return business.id
+        except:
+            # If all else fails, return 1 (this will cause an error if ID 1 doesn't exist,
+            # but Django migrations will handle this appropriately)
+            return 1
+
 class Category(models.Model):
     """Model representing a product category."""
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -21,7 +53,7 @@ class Category(models.Model):
 class Product(models.Model):
     """Model representing a product in inventory."""
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    business = models.ForeignKey(BusinessProfile, on_delete=models.CASCADE)
+    business = models.ForeignKey(BusinessProfile, on_delete=models.CASCADE, default=get_default_business)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
     name = models.CharField(max_length=200)
     sku = models.CharField(max_length=50, unique=True)
