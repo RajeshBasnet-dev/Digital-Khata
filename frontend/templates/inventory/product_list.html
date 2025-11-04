@@ -1,85 +1,281 @@
 {% extends 'base.html' %}
 
+{% block title %}Inventory - Digital Khata{% endblock %}
+
 {% block content %}
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h2><i class="bi bi-box me-2"></i>Inventory Management</h2>
-    <a href="{% url 'inventory:product_create' %}" class="btn btn-primary">
-        <i class="bi bi-plus-lg me-2"></i>Add Product
-    </a>
+<div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
+  <div>
+    <h1 class="text-2xl md:text-3xl font-bold">Inventory</h1>
+    <p class="text-slate-600">Manage your products and stock levels</p>
+  </div>
+  <div class="flex flex-wrap gap-3 mt-4 md:mt-0">
+    <button class="btn btn-primary">
+      <i class="bi bi-plus-lg mr-2"></i>Add Product
+    </button>
+    <button class="btn btn-outline">
+      <i class="bi bi-download mr-2"></i>Export
+    </button>
+    <button class="btn btn-outline">
+      <i class="bi bi-upload mr-2"></i>Import
+    </button>
+  </div>
 </div>
 
+<!-- Search and Filters -->
+<div class="card mb-6">
+  <div class="card-body">
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div class="flex-1">
+        <div class="relative">
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <i class="bi bi-search text-slate-400"></i>
+          </div>
+          <input 
+            type="text" 
+            class="form-control pl-10" 
+            placeholder="Search products..."
+          >
+        </div>
+      </div>
+      <div class="flex flex-wrap gap-3">
+        <select class="form-control">
+          <option>All Categories</option>
+          <option>Food & Beverages</option>
+          <option>Personal Care</option>
+          <option>Health & Wellness</option>
+          <option>Household Items</option>
+        </select>
+        <select class="form-control">
+          <option>All Status</option>
+          <option>In Stock</option>
+          <option>Low Stock</option>
+          <option>Out of Stock</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Inventory Stats -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+  <div class="stat-card">
+    <div class="flex items-center">
+      <div class="p-3 rounded-full bg-blue-100 text-blue-500 mr-4">
+        <i class="bi bi-boxes text-2xl"></i>
+      </div>
+      <div>
+        <p class="text-sm text-slate-600">Total Products</p>
+        <h3 class="text-2xl font-bold">1,248</h3>
+      </div>
+    </div>
+  </div>
+  
+  <div class="stat-card">
+    <div class="flex items-center">
+      <div class="p-3 rounded-full bg-green-100 text-green-500 mr-4">
+        <i class="bi bi-check-circle text-2xl"></i>
+      </div>
+      <div>
+        <p class="text-sm text-slate-600">In Stock</p>
+        <h3 class="text-2xl font-bold">1,156</h3>
+      </div>
+    </div>
+  </div>
+  
+  <div class="stat-card">
+    <div class="flex items-center">
+      <div class="p-3 rounded-full bg-amber-100 text-amber-500 mr-4">
+        <i class="bi bi-exclamation-triangle text-2xl"></i>
+      </div>
+      <div>
+        <p class="text-sm text-slate-600">Low Stock</p>
+        <h3 class="text-2xl font-bold">67</h3>
+      </div>
+    </div>
+  </div>
+  
+  <div class="stat-card">
+    <div class="flex items-center">
+      <div class="p-3 rounded-full bg-red-100 text-red-500 mr-4">
+        <i class="bi bi-x-circle text-2xl"></i>
+      </div>
+      <div>
+        <p class="text-sm text-slate-600">Out of Stock</p>
+        <h3 class="text-2xl font-bold">25</h3>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Product Table -->
 <div class="card">
-    <div class="card-header">
-        <div class="row align-items-center">
-            <div class="col-md-6">
-                <h5 class="mb-0">Product List</h5>
-            </div>
-            <div class="col-md-6">
-                <form method="get" class="search-form d-flex">
-                    <input type="search" name="search" class="form-control me-2" 
-                           placeholder="Search products..." value="{{ search_query }}">
-                    <button class="btn btn-outline-primary" type="submit">
-                        <i class="bi bi-search"></i>
-                    </button>
-                </form>
-            </div>
-        </div>
+  <div class="card-header">
+    <h2 class="card-title">Product List</h2>
+  </div>
+  <div class="card-body">
+    <div class="overflow-x-auto">
+      <table class="table w-full">
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Stock</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <div class="flex items-center">
+                <div class="bg-slate-200 border-2 border-dashed rounded-xl w-10 h-10 mr-3" />
+                <div>
+                  <p class="font-medium">Maggi Noodles</p>
+                  <p class="text-sm text-slate-600">100g Pack</p>
+                </div>
+              </div>
+            </td>
+            <td>Food & Beverages</td>
+            <td>₹12</td>
+            <td>125</td>
+            <td><span class="badge badge-success">In Stock</span></td>
+            <td>
+              <div class="action-buttons">
+                <button class="btn btn-sm btn-outline">
+                  <i class="bi bi-pencil"></i>
+                </button>
+                <button class="btn btn-sm btn-outline">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+          
+          <tr>
+            <td>
+              <div class="flex items-center">
+                <div class="bg-slate-200 border-2 border-dashed rounded-xl w-10 h-10 mr-3" />
+                <div>
+                  <p class="font-medium">Dettol Soap</p>
+                  <p class="text-sm text-slate-600">125g Bar</p>
+                </div>
+              </div>
+            </td>
+            <td>Personal Care</td>
+            <td>₹35</td>
+            <td>89</td>
+            <td><span class="badge badge-success">In Stock</span></td>
+            <td>
+              <div class="action-buttons">
+                <button class="btn btn-sm btn-outline">
+                  <i class="bi bi-pencil"></i>
+                </button>
+                <button class="btn btn-sm btn-outline">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+          
+          <tr>
+            <td>
+              <div class="flex items-center">
+                <div class="bg-slate-200 border-2 border-dashed rounded-xl w-10 h-10 mr-3" />
+                <div>
+                  <p class="font-medium">Patanjali Honey</p>
+                  <p class="text-sm text-slate-600">500g Bottle</p>
+                </div>
+              </div>
+            </td>
+            <td>Health & Wellness</td>
+            <td>₹180</td>
+            <td>12</td>
+            <td><span class="badge badge-warning">Low Stock</span></td>
+            <td>
+              <div class="action-buttons">
+                <button class="btn btn-sm btn-outline">
+                  <i class="bi bi-pencil"></i>
+                </button>
+                <button class="btn btn-sm btn-outline">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+          
+          <tr>
+            <td>
+              <div class="flex items-center">
+                <div class="bg-slate-200 border-2 border-dashed rounded-xl w-10 h-10 mr-3" />
+                <div>
+                  <p class="font-medium">Amul Butter</p>
+                  <p class="text-sm text-slate-600">500g Packet</p>
+                </div>
+              </div>
+            </td>
+            <td>Dairy Products</td>
+            <td>₹220</td>
+            <td>0</td>
+            <td><span class="badge badge-danger">Out of Stock</span></td>
+            <td>
+              <div class="action-buttons">
+                <button class="btn btn-sm btn-outline">
+                  <i class="bi bi-pencil"></i>
+                </button>
+                <button class="btn btn-sm btn-outline">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+          
+          <tr>
+            <td>
+              <div class="flex items-center">
+                <div class="bg-slate-200 border-2 border-dashed rounded-xl w-10 h-10 mr-3" />
+                <div>
+                  <p class="font-medium">Colgate Toothpaste</p>
+                  <p class="text-sm text-slate-600">100g Tube</p>
+                </div>
+              </div>
+            </td>
+            <td>Personal Care</td>
+            <td>₹45</td>
+            <td>67</td>
+            <td><span class="badge badge-success">In Stock</span></td>
+            <td>
+              <div class="action-buttons">
+                <button class="btn btn-sm btn-outline">
+                  <i class="bi bi-pencil"></i>
+                </button>
+                <button class="btn btn-sm btn-outline">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-    <div class="card-body">
-        {% if products %}
-        <div class="table-responsive">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>SKU</th>
-                        <th>Category</th>
-                        <th>Price</th>
-                        <th>Stock</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for product in products %}
-                    <tr>
-                        <td>{{ product.name }}</td>
-                        <td>{{ product.sku }}</td>
-                        <td>{{ product.category|default:"-" }}</td>
-                        <td>रू {{ product.price|floatformat:2 }}</td>
-                        <td>{{ product.stock_quantity }}</td>
-                        <td>
-                            <span class="badge bg-{% if product.get_stock_status == 'in_stock' %}success{% elif product.get_stock_status == 'low_stock' %}warning{% else %}danger{% endif %}">
-                                {{ product.get_stock_status|title }}
-                            </span>
-                        </td>
-                        <td class="action-buttons">
-                            <a href="{% url 'inventory:product_update' product.pk %}" 
-                               class="btn btn-sm btn-outline-primary" title="Edit">
-                                <i class="bi bi-pencil"></i>
-                            </a>
-                            <a href="{% url 'inventory:product_delete' product.pk %}" 
-                               class="btn btn-sm btn-outline-danger" 
-                               onclick="return confirmDelete('Are you sure you want to delete {{ product.name }}?')"
-                               title="Delete">
-                                <i class="bi bi-trash"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-        {% else %}
-        <div class="text-center py-5">
-            <i class="bi bi-box" style="font-size: 3rem; color: #ccc;"></i>
-            <h4 class="mt-3">No products found</h4>
-            <p class="text-muted">Get started by adding your first product.</p>
-            <a href="{% url 'inventory:product_create' %}" class="btn btn-primary">
-                <i class="bi bi-plus-lg me-2"></i>Add Product
-            </a>
-        </div>
-        {% endif %}
+    
+    <!-- Pagination -->
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between mt-6 pt-6 border-t border-slate-200">
+      <p class="text-slate-600 mb-4 md:mb-0">
+        Showing <span class="font-medium">1</span> to <span class="font-medium">5</span> of <span class="font-medium">1,248</span> results
+      </p>
+      <div class="flex space-x-2">
+        <button class="btn btn-outline">
+          <i class="bi bi-chevron-left"></i>
+        </button>
+        <button class="btn btn-primary">1</button>
+        <button class="btn btn-outline">2</button>
+        <button class="btn btn-outline">3</button>
+        <button class="btn btn-outline">
+          <i class="bi bi-chevron-right"></i>
+        </button>
+      </div>
     </div>
+  </div>
 </div>
 {% endblock %}

@@ -1,83 +1,265 @@
 {% extends 'base.html' %}
 
+{% block title %}Purchases - Digital Khata{% endblock %}
+
 {% block content %}
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h2><i class="bi bi-cart me-2"></i>Purchase Management</h2>
-    <a href="{% url 'purchases:bill_create' %}" class="btn btn-primary">
-        <i class="bi bi-plus-lg me-2"></i>Create Bill
-    </a>
+<div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
+  <div>
+    <h1 class="text-2xl md:text-3xl font-bold">Purchases</h1>
+    <p class="text-slate-600">Manage your purchase bills and supplier records</p>
+  </div>
+  <div class="flex flex-wrap gap-3 mt-4 md:mt-0">
+    <button class="btn btn-primary">
+      <i class="bi bi-plus-lg mr-2"></i>New Bill
+    </button>
+    <button class="btn btn-outline">
+      <i class="bi bi-download mr-2"></i>Export
+    </button>
+  </div>
 </div>
 
+<!-- Purchase Stats -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+  <div class="stat-card">
+    <div class="flex items-center">
+      <div class="p-3 rounded-full bg-blue-100 text-blue-500 mr-4">
+        <i class="bi bi-currency-rupee text-2xl"></i>
+      </div>
+      <div>
+        <p class="text-sm text-slate-600">Today's Purchases</p>
+        <h3 class="text-2xl font-bold">₹18,450</h3>
+      </div>
+    </div>
+  </div>
+  
+  <div class="stat-card">
+    <div class="flex items-center">
+      <div class="p-3 rounded-full bg-green-100 text-green-500 mr-4">
+        <i class="bi bi-receipt text-2xl"></i>
+      </div>
+      <div>
+        <p class="text-sm text-slate-600">Today's Bills</p>
+        <h3 class="text-2xl font-bold">28</h3>
+      </div>
+    </div>
+  </div>
+  
+  <div class="stat-card">
+    <div class="flex items-center">
+      <div class="p-3 rounded-full bg-amber-100 text-amber-500 mr-4">
+        <i class="bi bi-people text-2xl"></i>
+      </div>
+      <div>
+        <p class="text-sm text-slate-600">Suppliers</p>
+        <h3 class="text-2xl font-bold">42</h3>
+      </div>
+    </div>
+  </div>
+  
+  <div class="stat-card">
+    <div class="flex items-center">
+      <div class="p-3 rounded-full bg-purple-100 text-purple-500 mr-4">
+        <i class="bi bi-graph-up text-2xl"></i>
+      </div>
+      <div>
+        <p class="text-sm text-slate-600">Monthly Growth</p>
+        <h3 class="text-2xl font-bold">12%</h3>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Search and Filters -->
+<div class="card mb-6">
+  <div class="card-body">
+    <div class="flex flex-col md:flex-row md:items-center gap-4">
+      <div class="flex-1">
+        <div class="relative">
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <i class="bi bi-search text-slate-400"></i>
+          </div>
+          <input 
+            type="text" 
+            class="form-control pl-10" 
+            placeholder="Search bills..."
+          >
+        </div>
+      </div>
+      <div class="flex flex-wrap gap-3">
+        <select class="form-control">
+          <option>All Status</option>
+          <option>Paid</option>
+          <option>Pending</option>
+          <option>Overdue</option>
+        </select>
+        <select class="form-control">
+          <option>This Month</option>
+          <option>Last Month</option>
+          <option>Last 3 Months</option>
+          <option>Last 6 Months</option>
+        </select>
+        <button class="btn btn-primary">
+          <i class="bi bi-funnel mr-2"></i>Filter
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bill Table -->
 <div class="card">
-    <div class="card-header">
-        <div class="row align-items-center">
-            <div class="col-md-6">
-                <h5 class="mb-0">Bill List</h5>
-            </div>
-            <div class="col-md-6">
-                <form method="get" class="search-form d-flex">
-                    <input type="search" name="search" class="form-control me-2" 
-                           placeholder="Search bills..." value="{{ search_query }}">
-                    <button class="btn btn-outline-primary" type="submit">
-                        <i class="bi bi-search"></i>
-                    </button>
-                </form>
-            </div>
-        </div>
+  <div class="card-header">
+    <h2 class="card-title">Recent Bills</h2>
+  </div>
+  <div class="card-body">
+    <div class="overflow-x-auto">
+      <table class="table w-full">
+        <thead>
+          <tr>
+            <th>Bill ID</th>
+            <th>Supplier</th>
+            <th>Date</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>#BILL-00245</td>
+            <td>
+              <div class="flex items-center">
+                <div class="bg-slate-200 border-2 border-dashed rounded-full w-8 h-8 mr-2" />
+                <span>Rajesh Wholesale</span>
+              </div>
+            </td>
+            <td>Today, 10:30 AM</td>
+            <td>₹12,450</td>
+            <td><span class="badge badge-success">Paid</span></td>
+            <td>
+              <div class="action-buttons">
+                <button class="btn btn-sm btn-outline">
+                  <i class="bi bi-eye"></i>
+                </button>
+                <button class="btn btn-sm btn-outline">
+                  <i class="bi bi-printer"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+          
+          <tr>
+            <td>#BILL-00244</td>
+            <td>
+              <div class="flex items-center">
+                <div class="bg-slate-200 border-2 border-dashed rounded-full w-8 h-8 mr-2" />
+                <span>Sunita Distributors</span>
+              </div>
+            </td>
+            <td>Today, 9:15 AM</td>
+            <td>₹8,750</td>
+            <td><span class="badge badge-warning">Pending</span></td>
+            <td>
+              <div class="action-buttons">
+                <button class="btn btn-sm btn-outline">
+                  <i class="bi bi-eye"></i>
+                </button>
+                <button class="btn btn-sm btn-outline">
+                  <i class="bi bi-printer"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+          
+          <tr>
+            <td>#BILL-00243</td>
+            <td>
+              <div class="flex items-center">
+                <div class="bg-slate-200 border-2 border-dashed rounded-full w-8 h-8 mr-2" />
+                <span>Vikash Traders</span>
+              </div>
+            </td>
+            <td>Yesterday, 5:45 PM</td>
+            <td>₹15,450</td>
+            <td><span class="badge badge-success">Paid</span></td>
+            <td>
+              <div class="action-buttons">
+                <button class="btn btn-sm btn-outline">
+                  <i class="bi bi-eye"></i>
+                </button>
+                <button class="btn btn-sm btn-outline">
+                  <i class="bi bi-printer"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+          
+          <tr>
+            <td>#BILL-00242</td>
+            <td>
+              <div class="flex items-center">
+                <div class="bg-slate-200 border-2 border-dashed rounded-full w-8 h-8 mr-2" />
+                <span>Priya Suppliers</span>
+              </div>
+            </td>
+            <td>Yesterday, 3:20 PM</td>
+            <td>₹9,890</td>
+            <td><span class="badge badge-success">Paid</span></td>
+            <td>
+              <div class="action-buttons">
+                <button class="btn btn-sm btn-outline">
+                  <i class="bi bi-eye"></i>
+                </button>
+                <button class="btn btn-sm btn-outline">
+                  <i class="bi bi-printer"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+          
+          <tr>
+            <td>#BILL-00241</td>
+            <td>
+              <div class="flex items-center">
+                <div class="bg-slate-200 border-2 border-dashed rounded-full w-8 h-8 mr-2" />
+                <span>Amit Enterprises</span>
+              </div>
+            </td>
+            <td>Yesterday, 11:30 AM</td>
+            <td>₹7,950</td>
+            <td><span class="badge badge-danger">Overdue</span></td>
+            <td>
+              <div class="action-buttons">
+                <button class="btn btn-sm btn-outline">
+                  <i class="bi bi-eye"></i>
+                </button>
+                <button class="btn btn-sm btn-outline">
+                  <i class="bi bi-printer"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-    <div class="card-body">
-        {% if bills %}
-        <div class="table-responsive">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Bill #</th>
-                        <th>Supplier</th>
-                        <th>Date</th>
-                        <th>Total Amount</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for bill in bills %}
-                    <tr>
-                        <td>{{ bill.bill_number }}</td>
-                        <td>{{ bill.supplier.name }}</td>
-                        <td>{{ bill.date }}</td>
-                        <td>रू {{ bill.total_amount|floatformat:2 }}</td>
-                        <td>
-                            <span class="badge bg-{% if bill.status == 'paid' %}success{% elif bill.status == 'received' %}warning{% else %}danger{% endif %}">
-                                {{ bill.get_status_display }}
-                            </span>
-                        </td>
-                        <td class="action-buttons">
-                            <a href="{% url 'purchases:bill_update' bill.pk %}" 
-                               class="btn btn-sm btn-outline-primary" title="Edit">
-                                <i class="bi bi-pencil"></i>
-                            </a>
-                            <a href="{% url 'purchases:bill_delete' bill.pk %}" 
-                               class="btn btn-sm btn-outline-danger" 
-                               onclick="return confirmDelete('Are you sure you want to delete bill {{ bill.bill_number }}?')"
-                               title="Delete">
-                                <i class="bi bi-trash"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-        {% else %}
-        <div class="text-center py-5">
-            <i class="bi bi-cart" style="font-size: 3rem; color: #ccc;"></i>
-            <h4 class="mt-3">No bills found</h4>
-            <p class="text-muted">Get started by creating your first bill.</p>
-            <a href="{% url 'purchases:bill_create' %}" class="btn btn-primary">
-                <i class="bi bi-plus-lg me-2"></i>Create Bill
-            </a>
-        </div>
-        {% endif %}
+    
+    <!-- Pagination -->
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between mt-6 pt-6 border-t border-slate-200">
+      <p class="text-slate-600 mb-4 md:mb-0">
+        Showing <span class="font-medium">1</span> to <span class="font-medium">5</span> of <span class="font-medium">87</span> results
+      </p>
+      <div class="flex space-x-2">
+        <button class="btn btn-outline">
+          <i class="bi bi-chevron-left"></i>
+        </button>
+        <button class="btn btn-primary">1</button>
+        <button class="btn btn-outline">2</button>
+        <button class="btn btn-outline">3</button>
+        <button class="btn btn-outline">
+          <i class="bi bi-chevron-right"></i>
+        </button>
+      </div>
     </div>
+  </div>
 </div>
 {% endblock %}

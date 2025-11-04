@@ -5,20 +5,24 @@ Forms for the accounts app in Digital Khata.
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Customer, Supplier, BusinessProfile
+from digital_khata.accounts.models import Customer, Supplier, BusinessProfile
 
 class CustomUserCreationForm(UserCreationForm):
     """Custom user creation form with email field."""
     
+    first_name = forms.CharField(max_length=30, required=True)
+    last_name = forms.CharField(max_length=30, required=True)
     email = forms.EmailField(required=True)
     
-    class Meta:
+    class Meta(UserCreationForm.Meta):
         model = User
-        fields = ("username", "email", "password1", "password2")
+        fields = ("username", "first_name", "last_name", "email", "password1", "password2")
     
     def save(self, commit=True):
         """Save the user with email."""
         user = super().save(commit=False)
+        user.first_name = self.cleaned_data["first_name"]
+        user.last_name = self.cleaned_data["last_name"]
         user.email = self.cleaned_data["email"]
         if commit:
             user.save()

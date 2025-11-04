@@ -6,6 +6,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.db import IntegrityError
 from .forms import CustomUserCreationForm, BusinessProfileForm
 from .models import BusinessProfile
 
@@ -14,10 +15,15 @@ def signup(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            login(request, user)
-            messages.success(request, 'Account created successfully!')
-            return redirect('accounts:business_setup')
+            try:
+                user = form.save()
+                login(request, user)
+                messages.success(request, 'Account created successfully!')
+                return redirect('accounts:business_setup')
+            except IntegrityError:
+                form.add_error('username', 'This username is already taken. Please choose another.')
+        # If form is not valid or there was an IntegrityError, 
+        # we'll fall through to render the form with errors
     else:
         form = CustomUserCreationForm()
     

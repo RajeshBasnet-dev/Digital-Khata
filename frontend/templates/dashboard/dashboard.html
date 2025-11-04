@@ -1,112 +1,301 @@
 {% extends 'base.html' %}
 
+{% block title %}Dashboard - Digital Khata{% endblock %}
+
 {% block content %}
-<div class="row g-4 mb-4">
-    <div class="col-md-3">
-        <div class="stat-card">
-            <i class="bi bi-currency-dollar"></i>
-            <h3>रू {{ total_sales|floatformat:2 }}</h3>
-            <p class="mb-0">Total Sales</p>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="stat-card">
-            <i class="bi bi-cart"></i>
-            <h3>रू {{ total_purchases|floatformat:2 }}</h3>
-            <p class="mb-0">Total Purchases</p>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="stat-card">
-            <i class="bi bi-box"></i>
-            <h3>{{ total_products }}</h3>
-            <p class="mb-0">Total Products</p>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="stat-card">
-            <i class="bi bi-exclamation-triangle"></i>
-            <h3>{{ low_stock_products }}</h3>
-            <p class="mb-0">Low Stock Items</p>
-        </div>
-    </div>
+<div class="flex justify-between items-center mb-8">
+  <h1 class="text-2xl md:text-3xl font-bold">Dashboard</h1>
+  <div class="flex space-x-3">
+    <button class="btn btn-primary">
+      <i class="bi bi-plus-lg mr-2"></i>New Sale
+    </button>
+    <button class="btn btn-outline">
+      <i class="bi bi-download mr-2"></i>Export Report
+    </button>
+  </div>
 </div>
 
-<div class="row g-4">
-    <div class="col-md-6">
-        <div class="card">
-            <div class="card-header">
-                <h5 class="card-title mb-0"><i class="bi bi-clock-history me-2"></i>Recent Sales</h5>
-            </div>
-            <div class="card-body">
-                {% if recent_invoices %}
-                <div class="table-responsive">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>Invoice #</th>
-                                <th>Customer</th>
-                                <th>Date</th>
-                                <th>Amount</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for invoice in recent_invoices %}
-                            <tr>
-                                <td>{{ invoice.invoice_number }}</td>
-                                <td>{{ invoice.customer.name }}</td>
-                                <td>{{ invoice.date }}</td>
-                                <td>रू {{ invoice.total_amount|floatformat:2 }}</td>
-                                <td>
-                                    <span class="badge bg-{% if invoice.status == 'paid' %}success{% elif invoice.status == 'sent' %}warning{% else %}danger{% endif %}">
-                                        {{ invoice.get_status_display }}
-                                    </span>
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-                {% else %}
-                <p class="text-muted text-center py-5">No recent sales found.</p>
-                {% endif %}
-            </div>
-        </div>
+<!-- Stats Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+  <div class="stat-card card-premium">
+    <div class="flex items-center">
+      <div class="p-3 rounded-full bg-blue-100 text-blue-500 mr-4">
+        <i class="bi bi-currency-rupee text-2xl"></i>
+      </div>
+      <div>
+        <p class="text-sm text-slate-600">Today's Sales</p>
+        <h3 class="text-2xl font-bold">₹24,560</h3>
+      </div>
     </div>
-    
-    <div class="col-md-6">
-        <div class="card">
-            <div class="card-header">
-                <h5 class="card-title mb-0"><i class="bi bi-graph-up me-2"></i>Top Products</h5>
-            </div>
-            <div class="card-body">
-                {% if top_products %}
-                <div class="table-responsive">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>Product</th>
-                                <th>Stock</th>
-                                <th>Price</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for product in top_products %}
-                            <tr>
-                                <td>{{ product.name }}</td>
-                                <td>{{ product.stock_quantity }}</td>
-                                <td>रू {{ product.price|floatformat:2 }}</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-                {% else %}
-                <p class="text-muted text-center py-5">No products found.</p>
-                {% endif %}
-            </div>
-        </div>
+  </div>
+  
+  <div class="stat-card card-premium">
+    <div class="flex items-center">
+      <div class="p-3 rounded-full bg-green-100 text-green-500 mr-4">
+        <i class="bi bi-cart-check text-2xl"></i>
+      </div>
+      <div>
+        <p class="text-sm text-slate-600">Today's Orders</p>
+        <h3 class="text-2xl font-bold">42</h3>
+      </div>
     </div>
+  </div>
+  
+  <div class="stat-card card-premium">
+    <div class="flex items-center">
+      <div class="p-3 rounded-full bg-amber-100 text-amber-500 mr-4">
+        <i class="bi bi-box-seam text-2xl"></i>
+      </div>
+      <div>
+        <p class="text-sm text-slate-600">Low Stock Items</p>
+        <h3 class="text-2xl font-bold">8</h3>
+      </div>
+    </div>
+  </div>
+  
+  <div class="stat-card card-premium">
+    <div class="flex items-center">
+      <div class="p-3 rounded-full bg-purple-100 text-purple-500 mr-4">
+        <i class="bi bi-people text-2xl"></i>
+      </div>
+      <div>
+        <p class="text-sm text-slate-600">New Customers</p>
+        <h3 class="text-2xl font-bold">12</h3>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Charts and Recent Activity -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+  <!-- Sales Chart -->
+  <div class="lg:col-span-2 card">
+    <div class="card-header">
+      <h2 class="card-title">Sales Overview</h2>
+    </div>
+    <div class="card-body">
+      <div class="h-64 flex items-center justify-center bg-slate-50 rounded-lg">
+        <p class="text-slate-500">Sales chart visualization would appear here</p>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Top Products -->
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title">Top Selling Products</h2>
+    </div>
+    <div class="card-body">
+      <div class="space-y-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center">
+            <div class="bg-slate-200 border-2 border-dashed rounded-xl w-16 h-16" />
+            <div class="ml-4">
+              <h3 class="font-medium">Maggi Noodles</h3>
+              <p class="text-sm text-slate-600">Food & Beverages</p>
+            </div>
+          </div>
+          <div class="text-right">
+            <p class="font-medium">₹12,450</p>
+            <p class="text-sm text-slate-600">125 sold</p>
+          </div>
+        </div>
+        
+        <div class="flex items-center justify-between">
+          <div class="flex items-center">
+            <div class="bg-slate-200 border-2 border-dashed rounded-xl w-16 h-16" />
+            <div class="ml-4">
+              <h3 class="font-medium">Dettol Soap</h3>
+              <p class="text-sm text-slate-600">Personal Care</p>
+            </div>
+          </div>
+          <div class="text-right">
+            <p class="font-medium">₹8,750</p>
+            <p class="text-sm text-slate-600">89 sold</p>
+          </div>
+        </div>
+        
+        <div class="flex items-center justify-between">
+          <div class="flex items-center">
+            <div class="bg-slate-200 border-2 border-dashed rounded-xl w-16 h-16" />
+            <div class="ml-4">
+              <h3 class="font-medium">Patanjali Honey</h3>
+              <p class="text-sm text-slate-600">Health & Wellness</p>
+            </div>
+          </div>
+          <div class="text-right">
+            <p class="font-medium">₹6,980</p>
+            <p class="text-sm text-slate-600">67 sold</p>
+          </div>
+        </div>
+        
+        <div class="flex items-center justify-between">
+          <div class="flex items-center">
+            <div class="bg-slate-200 border-2 border-dashed rounded-xl w-16 h-16" />
+            <div class="ml-4">
+              <h3 class="font-medium">Amul Butter</h3>
+              <p class="text-sm text-slate-600">Dairy Products</p>
+            </div>
+          </div>
+          <div class="text-right">
+            <p class="font-medium">₹5,620</p>
+            <p class="text-sm text-slate-600">54 sold</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Recent Transactions -->
+<div class="card mb-8">
+  <div class="card-header">
+    <h2 class="card-title">Recent Transactions</h2>
+  </div>
+  <div class="card-body">
+    <div class="overflow-x-auto">
+      <table class="table w-full">
+        <thead>
+          <tr>
+            <th>Invoice ID</th>
+            <th>Customer</th>
+            <th>Date</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>#INV-00125</td>
+            <td>Rajesh Kumar</td>
+            <td>Today, 10:30 AM</td>
+            <td>₹1,250</td>
+            <td><span class="badge badge-success">Paid</span></td>
+            <td>
+              <div class="action-buttons">
+                <button class="btn btn-sm btn-outline">
+                  <i class="bi bi-eye"></i>
+                </button>
+                <button class="btn btn-sm btn-outline">
+                  <i class="bi bi-whatsapp"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>#INV-00124</td>
+            <td>Sunita Devi</td>
+            <td>Today, 9:15 AM</td>
+            <td>₹850</td>
+            <td><span class="badge badge-warning">Pending</span></td>
+            <td>
+              <div class="action-buttons">
+                <button class="btn btn-sm btn-outline">
+                  <i class="bi bi-eye"></i>
+                </button>
+                <button class="btn btn-sm btn-outline">
+                  <i class="bi bi-whatsapp"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>#INV-00123</td>
+            <td>Vikash Singh</td>
+            <td>Yesterday, 5:45 PM</td>
+            <td>₹2,450</td>
+            <td><span class="badge badge-success">Paid</span></td>
+            <td>
+              <div class="action-buttons">
+                <button class="btn btn-sm btn-outline">
+                  <i class="bi bi-eye"></i>
+                </button>
+                <button class="btn btn-sm btn-outline">
+                  <i class="bi bi-whatsapp"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>#INV-00122</td>
+            <td>Priya Sharma</td>
+            <td>Yesterday, 3:20 PM</td>
+            <td>₹1,890</td>
+            <td><span class="badge badge-success">Paid</span></td>
+            <td>
+              <div class="action-buttons">
+                <button class="btn btn-sm btn-outline">
+                  <i class="bi bi-eye"></i>
+                </button>
+                <button class="btn btn-sm btn-outline">
+                  <i class="bi bi-whatsapp"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>#INV-00121</td>
+            <td>Amit Patel</td>
+            <td>Yesterday, 11:30 AM</td>
+            <td>₹950</td>
+            <td><span class="badge badge-danger">Overdue</span></td>
+            <td>
+              <div class="action-buttons">
+                <button class="btn btn-sm btn-outline">
+                  <i class="bi bi-eye"></i>
+                </button>
+                <button class="btn btn-sm btn-outline">
+                  <i class="bi bi-whatsapp"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+  <div class="feature-card">
+    <div class="icon">
+      <i class="bi bi-box"></i>
+    </div>
+    <h3 class="text-xl font-bold mb-2">Add Product</h3>
+    <p class="text-slate-600 mb-4">
+      Quickly add new products to your inventory.
+    </p>
+    <a href="{% url 'inventory:add_product' %}" class="btn btn-primary w-full">
+      Add Product
+    </a>
+  </div>
+  
+  <div class="feature-card">
+    <div class="icon">
+      <i class="bi bi-receipt"></i>
+    </div>
+    <h3 class="text-xl font-bold mb-2">Create Invoice</h3>
+    <p class="text-slate-600 mb-4">
+      Generate professional invoices for your customers.
+    </p>
+    <a href="{% url 'sales:create_invoice' %}" class="btn btn-primary w-full">
+      Create Invoice
+    </a>
+  </div>
+  
+  <div class="feature-card">
+    <div class="icon">
+      <i class="bi bi-graph-up"></i>
+    </div>
+    <h3 class="text-xl font-bold mb-2">View Reports</h3>
+    <p class="text-slate-600 mb-4">
+      Get detailed insights into your business performance.
+    </p>
+    <a href="{% url 'reports:sales_report' %}" class="btn btn-primary w-full">
+      View Reports
+    </a>
+  </div>
 </div>
 {% endblock %}

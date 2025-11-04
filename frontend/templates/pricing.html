@@ -1,0 +1,202 @@
+{% extends 'base.html' %}
+
+{% block title %}Pricing - Digital Khata{% endblock %}
+
+{% block content %}
+<div class="py-12">
+  <div class="text-center mb-16">
+    <h1 class="text-3xl md:text-4xl font-extrabold mb-4">Simple, Transparent Pricing</h1>
+    <p class="text-xl text-slate-600 max-w-3xl mx-auto">
+      Choose the perfect plan for your business. All plans include our core features with no hidden fees.
+    </p>
+  </div>
+  
+  <!-- Pricing Toggle -->
+  <div class="flex justify-center mb-12">
+    <div class="flex items-center">
+      <span class="mr-4 text-slate-600">Monthly</span>
+      <label class="relative inline-flex items-center cursor-pointer">
+        <input type="checkbox" class="sr-only peer" id="billing-toggle">
+        <div class="w-14 h-7 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[4px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-blue-500"></div>
+      </label>
+      <span class="ml-4 text-slate-600">Annual <span class="bg-amber-100 text-amber-800 text-xs font-semibold px-2.5 py-0.5 rounded">Save 20%</span></span>
+    </div>
+  </div>
+  
+  <!-- Pricing Cards -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+    <!-- Free Plan -->
+    <div class="pricing-card">
+      <div class="p-6">
+        <h3 class="text-2xl font-bold mb-2">Free</h3>
+        <div class="mb-6">
+          <span class="text-4xl font-extrabold">₹0</span>
+          <span class="text-slate-600">/month</span>
+        </div>
+        <ul class="mb-8 space-y-3">
+          <li class="flex items-center">
+            <i class="bi bi-check-circle-fill text-green-500 mr-2"></i>
+            <span>Up to 100 products</span>
+          </li>
+          <li class="flex items-center">
+            <i class="bi bi-check-circle-fill text-green-500 mr-2"></i>
+            <span>Basic inventory tracking</span>
+          </li>
+          <li class="flex items-center">
+            <i class="bi bi-check-circle-fill text-green-500 mr-2"></i>
+            <span>50 invoices per month</span>
+          </li>
+          <li class="flex items-center">
+            <i class="bi bi-check-circle-fill text-green-500 mr-2"></i>
+            <span>Email support</span>
+          </li>
+          <li class="flex items-center text-slate-400">
+            <i class="bi bi-x-circle mr-2"></i>
+            <span>Advanced analytics</span>
+          </li>
+          <li class="flex items-center text-slate-400">
+            <i class="bi bi-x-circle mr-2"></i>
+            <span>Customer management</span>
+          </li>
+        </ul>
+        <a href="{% url 'accounts:signup' %}" class="btn w-full py-3 bg-slate-100 text-slate-800 hover:bg-slate-200">
+          Get Started
+        </a>
+      </div>
+    </div>
+    
+    <!-- Pro Plan (Popular) -->
+    <div class="pricing-card popular">
+      <div class="popular-badge">MOST POPULAR</div>
+      <div class="p-6">
+        <h3 class="text-2xl font-bold mb-2">Pro</h3>
+        <div class="mb-6">
+          <span class="text-4xl font-extrabold monthly-price">₹499</span>
+          <span class="text-4xl font-extrabold annual-price hidden">₹399</span>
+          <span class="text-slate-600">/month</span>
+        </div>
+        <ul class="mb-8 space-y-3">
+          <li class="flex items-center">
+            <i class="bi bi-check-circle-fill text-green-500 mr-2"></i>
+            <span>Unlimited products</span>
+          </li>
+          <li class="flex items-center">
+            <i class="bi bi-check-circle-fill text-green-500 mr-2"></i>
+            <span>Advanced inventory tracking</span>
+          </li>
+          <li class="flex items-center">
+            <i class="bi bi-check-circle-fill text-green-500 mr-2"></i>
+            <span>Unlimited invoices</span>
+          </li>
+          <li class="flex items-center">
+            <i class="bi bi-check-circle-fill text-green-500 mr-2"></i>
+            <span>Priority support</span>
+          </li>
+          <li class="flex items-center">
+            <i class="bi bi-check-circle-fill text-green-500 mr-2"></i>
+            <span>Advanced analytics</span>
+          </li>
+          <li class="flex items-center">
+            <i class="bi bi-check-circle-fill text-green-500 mr-2"></i>
+            <span>Customer management</span>
+          </li>
+        </ul>
+        <a href="{% url 'accounts:signup' %}" class="btn-premium w-full py-3">
+          Start 14-Day Free Trial
+        </a>
+      </div>
+    </div>
+    
+    <!-- Business Plan -->
+    <div class="pricing-card">
+      <div class="p-6">
+        <h3 class="text-2xl font-bold mb-2">Business</h3>
+        <div class="mb-6">
+          <span class="text-4xl font-extrabold monthly-price">₹999</span>
+          <span class="text-4xl font-extrabold annual-price hidden">₹799</span>
+          <span class="text-slate-600">/month</span>
+        </div>
+        <ul class="mb-8 space-y-3">
+          <li class="flex items-center">
+            <i class="bi bi-check-circle-fill text-green-500 mr-2"></i>
+            <span>Everything in Pro</span>
+          </li>
+          <li class="flex items-center">
+            <i class="bi bi-check-circle-fill text-green-500 mr-2"></i>
+            <span>Multi-user access</span>
+          </li>
+          <li class="flex items-center">
+            <i class="bi bi-check-circle-fill text-green-500 mr-2"></i>
+            <span>Multi-store management</span>
+          </li>
+          <li class="flex items-center">
+            <i class="bi bi-check-circle-fill text-green-500 mr-2"></i>
+            <span>Dedicated account manager</span>
+          </li>
+          <li class="flex items-center">
+            <i class="bi bi-check-circle-fill text-green-500 mr-2"></i>
+            <span>Custom reporting</span>
+          </li>
+          <li class="flex items-center">
+            <i class="bi bi-check-circle-fill text-green-500 mr-2"></i>
+            <span>API access</span>
+          </li>
+        </ul>
+        <a href="{% url 'accounts:signup' %}" class="btn w-full py-3 bg-slate-100 text-slate-800 hover:bg-slate-200">
+          Contact Sales
+        </a>
+      </div>
+    </div>
+  </div>
+  
+  <!-- FAQ Section -->
+  <div class="max-w-3xl mx-auto mt-20">
+    <h2 class="text-2xl font-bold text-center mb-8">Frequently Asked Questions</h2>
+    <div class="space-y-4">
+      <div class="card">
+        <div class="card-body">
+          <h3 class="font-bold text-lg mb-2">Can I change plans later?</h3>
+          <p class="text-slate-600">Yes, you can upgrade or downgrade your plan at any time. When upgrading, you'll only pay the difference for the remaining time in your billing cycle.</p>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="card-body">
+          <h3 class="font-bold text-lg mb-2">Is there a setup fee?</h3>
+          <p class="text-slate-600">No, there are no setup fees for any of our plans. You can start using Digital Khata immediately after signing up.</p>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="card-body">
+          <h3 class="font-bold text-lg mb-2">What payment methods do you accept?</h3>
+          <p class="text-slate-600">We accept all major credit cards, UPI, and bank transfers. For Business plan customers, we also offer invoiced billing.</p>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="card-body">
+          <h3 class="font-bold text-lg mb-2">Can I cancel my subscription?</h3>
+          <p class="text-slate-600">Yes, you can cancel your subscription at any time. Your account will remain active until the end of your current billing period.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Toggle billing period
+  document.getElementById('billing-toggle')?.addEventListener('change', function() {
+    const monthlyPrices = document.querySelectorAll('.monthly-price');
+    const annualPrices = document.querySelectorAll('.annual-price');
+    
+    if (this.checked) {
+      monthlyPrices.forEach(el => el.classList.add('hidden'));
+      annualPrices.forEach(el => el.classList.remove('hidden'));
+    } else {
+      monthlyPrices.forEach(el => el.classList.remove('hidden'));
+      annualPrices.forEach(el => el.classList.add('hidden'));
+    }
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,169 @@
+{% extends 'base.html' %}
+
+{% block title %}Add Products - Digital Khata{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto py-12">
+  <div class="text-center mb-8">
+    <h1 class="text-3xl font-bold mb-2">Add Your First Products</h1>
+    <p class="text-slate-600">Add some products to get started with inventory management</p>
+  </div>
+  
+  <div class="card">
+    <div class="card-body">
+      <div class="flex justify-center mb-6">
+        <div class="flex items-center">
+          <div class="w-8 h-8 rounded-full bg-green-500 text-white flex items-center justify-center">
+            <i class="bi bi-check"></i>
+          </div>
+          <div class="w-16 h-1 bg-green-500 mx-2"></div>
+          <div class="w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center">
+            2
+          </div>
+          <div class="w-16 h-1 bg-slate-200 mx-2"></div>
+          <div class="w-8 h-8 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center">
+            3
+          </div>
+        </div>
+      </div>
+      
+      <form method="post">
+        {% csrf_token %}
+        <div class="mb-6">
+          <div class="flex justify-between items-center mb-4">
+            <h3 class="font-medium">Products</h3>
+            <button type="button" id="add-product" class="btn btn-outline btn-sm">
+              <i class="bi bi-plus mr-1"></i> Add Product
+            </button>
+          </div>
+          
+          <div id="products-container">
+            <div class="product-row grid grid-cols-1 md:grid-cols-12 gap-4 mb-4">
+              <div class="md:col-span-4">
+                <input 
+                  type="text" 
+                  name="product_name[]" 
+                  class="form-control" 
+                  placeholder="Product name"
+                  required
+                >
+              </div>
+              <div class="md:col-span-3">
+                <input 
+                  type="text" 
+                  name="product_category[]" 
+                  class="form-control" 
+                  placeholder="Category"
+                >
+              </div>
+              <div class="md:col-span-2">
+                <input 
+                  type="number" 
+                  name="product_price[]" 
+                  class="form-control" 
+                  placeholder="Price"
+                  step="0.01"
+                  min="0"
+                >
+              </div>
+              <div class="md:col-span-2">
+                <input 
+                  type="number" 
+                  name="product_stock[]" 
+                  class="form-control" 
+                  placeholder="Stock"
+                  min="0"
+                >
+              </div>
+              <div class="md:col-span-1 flex items-center">
+                <button type="button" class="btn btn-outline btn-sm remove-product">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="flex justify-between">
+          <a href="{% url 'onboarding:business_setup' %}" class="btn btn-outline">
+            <i class="bi bi-arrow-left mr-2"></i> Back
+          </a>
+          <button type="submit" class="btn btn-primary">
+            Continue
+            <i class="bi bi-arrow-right ml-2"></i>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Add product row
+    document.getElementById('add-product')?.addEventListener('click', function() {
+      const container = document.getElementById('products-container');
+      const newRow = document.createElement('div');
+      newRow.className = 'product-row grid grid-cols-1 md:grid-cols-12 gap-4 mb-4';
+      newRow.innerHTML = `
+        <div class="md:col-span-4">
+          <input 
+            type="text" 
+            name="product_name[]" 
+            class="form-control" 
+            placeholder="Product name"
+            required
+          >
+        </div>
+        <div class="md:col-span-3">
+          <input 
+            type="text" 
+            name="product_category[]" 
+            class="form-control" 
+            placeholder="Category"
+          >
+        </div>
+        <div class="md:col-span-2">
+          <input 
+            type="number" 
+            name="product_price[]" 
+            class="form-control" 
+            placeholder="Price"
+            step="0.01"
+            min="0"
+          >
+        </div>
+        <div class="md:col-span-2">
+          <input 
+            type="number" 
+            name="product_stock[]" 
+            class="form-control" 
+            placeholder="Stock"
+            min="0"
+          >
+        </div>
+        <div class="md:col-span-1 flex items-center">
+          <button type="button" class="btn btn-outline btn-sm remove-product">
+            <i class="bi bi-trash"></i>
+          </button>
+        </div>
+      `;
+      container.appendChild(newRow);
+    });
+    
+    // Remove product row
+    document.addEventListener('click', function(e) {
+      if (e.target.closest('.remove-product')) {
+        const row = e.target.closest('.product-row');
+        if (document.querySelectorAll('.product-row').length > 1) {
+          row.remove();
+        } else {
+          // Clear the fields if it's the last row
+          const inputs = row.querySelectorAll('input');
+          inputs.forEach(input => input.value = '');
+        }
+      }
+    });
+  });
+</script>
+{% endblock %}

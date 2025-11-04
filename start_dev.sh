@@ -1,29 +1,34 @@
 #!/bin/bash
 
-# Script to start both Django backend and React frontend for development
+# Digital Khata Development Server Start Script
 
-# Check if virtual environment exists
-if [ ! -d "venv" ]; then
-    echo "Creating virtual environment..."
-    python -m venv venv
+echo "Starting Digital Khata Development Server..."
+
+# Activate virtual environment if it exists
+if [ -d "venv" ]; then
+    echo "Activating virtual environment..."
     source venv/bin/activate
-    pip install -r requirements.txt
-else
-    source venv/bin/activate
+elif [ -d ".venv" ]; then
+    echo "Activating virtual environment..."
+    source .venv/bin/activate
 fi
 
-# Start Django backend in background
-echo "Starting Django backend..."
-python manage.py runserver 8000 &
-DJANGO_PID=$!
+# Install dependencies if requirements.txt exists
+if [ -f "requirements.txt" ]; then
+    echo "Installing dependencies..."
+    pip install -r requirements.txt
+fi
 
-# Wait a moment for Django to start
-sleep 3
+# Run migrations
+echo "Running migrations..."
+python manage.py migrate
 
-# Start React frontend
-echo "Starting React frontend..."
-cd frontend
-npm run dev
+# Collect static files
+echo "Collecting static files..."
+python manage.py collectstatic --noinput
 
-# Kill Django when frontend is stopped
-kill $DJANGO_PID
+# Start the development server
+echo "Starting development server..."
+python manage.py runserver 0.0.0.0:8000
+
+echo "Digital Khata development server is running on http://localhost:8000"
